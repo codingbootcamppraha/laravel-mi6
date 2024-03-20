@@ -1,15 +1,13 @@
 import React, { useState, useEffect, useContext } from 'react';
 import UserContext from "./UserContext"
 
-export default function Register({props}) {
+export default function Login(props) {
 
     const { getUser } = useContext(UserContext);
 
     const [values, setValues] = useState({
         email: '',
-        name: '',
-        password: '',
-        password_confirmation: ''
+        password: ''
     })
 
     const handleSubmit = async (event) => {
@@ -17,7 +15,7 @@ export default function Register({props}) {
         event.preventDefault();
 
         // make the AJAX request
-        const response = await fetch('/register', {
+        const response = await fetch('/login', {
             method: 'POST',
             body: JSON.stringify(values),
             headers: {
@@ -46,7 +44,7 @@ export default function Register({props}) {
         // // with axios
         // try {
         //     // make the AJAX request
-        //     const response = await axios.post('/register', values);
+        //     const response = await axios.post('/login', values);
         //     // get the (already JSON-parsed) response data
         //     const response_data = response.data;
         // } catch (error) {
@@ -76,11 +74,7 @@ export default function Register({props}) {
     }
 
     return (
-        <form action="/register" method="post" onSubmit={ handleSubmit }>
-
-            Name:<br />
-            <input type="text" name="name" value={ values.name } onChange={ handleChange } />
-            <br /><br />
+        <form action="/login" method="post" onSubmit={ handleSubmit }>
 
             Email:<br />
             <input type="email" name="email" value={ values.email } onChange={ handleChange } />
@@ -90,11 +84,7 @@ export default function Register({props}) {
             <input type="password" name="password" value={ values.password } onChange={ handleChange } />
             <br /><br />
 
-            Confirm password:<br />
-            <input type="password" name="password_confirmation" value={ values.password_confirmation } onChange={ handleChange } />
-            <br /><br />
-
-            <button>Register</button>
+            <button>Login</button>
 
         </form>
     );

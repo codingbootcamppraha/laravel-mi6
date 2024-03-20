@@ -6,7 +6,7 @@ const StatusFilter = ({ selectedStatus, setSelectedStatus }) => {
 
     const loadStatuses = async () => {
         try {
-            const response = await fetch("http://127.0.0.1:8000/api/statuses", {
+            const response = await fetch("/api/statuses", {
                 headers: {
                     "Content-Type": "application/json",
                 },

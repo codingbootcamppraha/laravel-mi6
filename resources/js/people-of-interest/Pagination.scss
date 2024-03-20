@@ -1,0 +1,41 @@
+.pagination {
+    display: flex;
+
+    > * {
+        margin-left: 1em;
+
+        &:first-child {
+            margin-left: 0;
+        }
+    }
+
+    &__button {
+        width: 3em;
+        height: 3em;
+        background-color: #ffffff33;
+        border-radius: 0.25em;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        cursor: pointer;
+
+        &:hover {
+            background-color: #ffffff66;
+        }
+
+        &--inactive,
+        &--inactive:hover {
+            background-color: #ffffff11;
+            color: #ffffff33;
+            cursor: default;
+        }
+    }
+
+    &__page {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 3em;
+        padding: 0 1em;
+    }
+}

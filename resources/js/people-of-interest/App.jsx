@@ -8,14 +8,22 @@ import { useEffect, useState } from 'react';
 export default function App() {
 
     const [user, setUser] = useState(null)
-    const [content, setContent] = useState('')
 
     const getUser = async () => {
         const response = await fetch('/api/user');
 
-        if (response.status == 200) {
+        if (response.status === 200) {
             const data = await response.json();
             setUser(data)
+        } else {
+            // user NOT logged-in
+            setUser(false);
+
+            // why false?
+            // false is different from null and we can use both of these
+            // empty values to show different states of the user:
+            //    - null - not acquired yet
+            //    - false - acquired but not logged in (not found)
         }
     }
 
@@ -28,8 +36,8 @@ export default function App() {
         <>
             <UserContext.Provider value={{user, setUser, getUser}}>
                 <BrowserRouter>
-                    <LeftMenu content={content} setContent={setContent}/>
-                    <Main content={content} setContent={setContent}/>
+                    <LeftMenu user={ user }/>
+                    <Main user={ user }/>
                 </BrowserRouter>
             </UserContext.Provider>
         </>
