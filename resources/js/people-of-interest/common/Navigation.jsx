@@ -24,6 +24,10 @@ const Navigation = ({setContent}) => {
                     e.preventDefault()
                     setContent('people-of-interest')
                 }}>People of interest</a>
+                <a onClick={(e) => {
+                    e.preventDefault()
+                    setContent('missions')
+                }}>Missions</a>
             </div>
         </div>
     </nav>

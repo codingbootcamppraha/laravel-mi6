@@ -2,6 +2,7 @@ import { useState } from "react";
 import Navigation from "./common/Navigation";
 import Home from "./pages/Home";
 import People from "./pages/People";
+import Missions from "./pages/Missions";
 
 const App = () => {
     const [content, setContent] = useState('');
@@ -15,6 +16,10 @@ const App = () => {
             case 'people-of-interest':
                 contentComponent = <People />
                 break;
+            
+            case 'missions':
+                contentComponent = <Missions />
+                break;
         
             default:
                 break;
@@ -22,8 +27,6 @@ const App = () => {
 
         return contentComponent;
     }
-
-
 
     return <>
         <Navigation setContent={setContent}/>
