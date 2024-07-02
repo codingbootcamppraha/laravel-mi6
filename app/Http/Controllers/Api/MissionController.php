@@ -23,4 +23,28 @@ class MissionController extends Controller
         
         return $mission;
     }
+
+    public function store(Request $request, $mission_id = null)
+    {
+        // ... validation
+        $request->validate([
+            'name' => 'required'
+        ]);
+
+        if ($mission_id) {
+            $mission = Mission::findOrFail($mission_id);
+        } else {
+            $mission = new Mission;
+        }
+
+        $mission->name = $request->input('name');
+        $mission->year = $request->input('year');
+        $mission->outcome = $request->input('outcome');
+        $mission->save();
+
+        return [
+            'status' => 'success',
+            'message' => 'The mission has been updated'
+        ];
+    }
 }
