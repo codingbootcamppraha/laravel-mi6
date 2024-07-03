@@ -60,9 +60,13 @@ const App = () => {
                     <>
                         <Route path="/people-of-interest" element={<People />}/>
                         <Route path="/missions" element={<Missions />}/>
+                        {/* Logout route */}
                     </>
                     : 
-                    <Route path="/register" element={<Register />}/>
+                    <>
+                        <Route path="/register" element={<Register />}/>
+                        {/* Login route */}
+                    </>
                 }
             </Routes>
         </div>

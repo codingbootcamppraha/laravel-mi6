@@ -38,9 +38,14 @@ const Navigation = ({setContent}) => {
                         <>
                             <Link to="/people-of-interest">People of interest</Link>
                             <Link to="/missions">Missions</Link>
+                            {/* Link to logout */}
                         </>
                     : 
+                    <>
                         <Link to="/register">Register</Link>
+                        {/* Link to login */}
+                    </>
+                        
 
                 }
             </div>
