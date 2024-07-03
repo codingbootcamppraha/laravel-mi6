@@ -21,7 +21,7 @@ const MissionEditForm = ({missionId, setMissionId}) => {
                 outcome: response.data.outcome ?? ''
            });
         } catch (error) {
-             console.log(error)
+            console.log(error)
         }
     }
 
@@ -43,6 +43,7 @@ const MissionEditForm = ({missionId, setMissionId}) => {
     }
 
     const handleChange = (event) => {
+        
         setValues(previousValues => {
             return ({...previousValues, 
                 [event.target.name]: event.target.value

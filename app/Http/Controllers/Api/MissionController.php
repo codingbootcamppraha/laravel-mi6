@@ -28,7 +28,8 @@ class MissionController extends Controller
     {
         // ... validation
         $request->validate([
-            'name' => 'required'
+            'name' => 'required',
+            'year' => 'required'
         ]);
 
         if ($mission_id) {

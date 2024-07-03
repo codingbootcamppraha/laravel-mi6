@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Link } from "react-router-dom";
 
 const Navigation = ({setContent}) => {
     const [collapsed, setCollapsed] = useState(false);
@@ -16,7 +17,7 @@ const Navigation = ({setContent}) => {
             </div>
 
             <div className="left-menu__links">
-                <a onClick={(e) => {
+                {/* <a onClick={(e) => {
                     e.preventDefault()
                     setContent('')
                 }}>Home</a>
@@ -27,7 +28,10 @@ const Navigation = ({setContent}) => {
                 <a onClick={(e) => {
                     e.preventDefault()
                     setContent('missions')
-                }}>Missions</a>
+                }}>Missions</a> */}
+                <Link to="/">Home</Link>
+                <Link to="/people-of-interest">People of interest</Link>
+                <Link to="/missions">Missions</Link>
             </div>
         </div>
     </nav>
