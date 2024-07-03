@@ -7,6 +7,7 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import UserContext from "./context/UserContext";
 import axios from "axios";
 import Register from "./pages/Register";
+import Login from "./pages/Login";
 
 const App = () => {
     const [content, setContent] = useState('');
@@ -60,12 +61,11 @@ const App = () => {
                     <>
                         <Route path="/people-of-interest" element={<People />}/>
                         <Route path="/missions" element={<Missions />}/>
-                        {/* Logout route */}
                     </>
                     : 
                     <>
                         <Route path="/register" element={<Register />}/>
-                        {/* Login route */}
+                        <Route path="/login" element={<Login />}/>
                     </>
                 }
             </Routes>

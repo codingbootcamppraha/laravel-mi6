@@ -1,6 +1,7 @@
 import { useContext, useState } from "react";
 import { Link } from "react-router-dom";
 import UserContext from "../context/UserContext";
+import Logout from "../components/Logout";
 
 const Navigation = ({setContent}) => {
     const [collapsed, setCollapsed] = useState(false);
@@ -38,12 +39,12 @@ const Navigation = ({setContent}) => {
                         <>
                             <Link to="/people-of-interest">People of interest</Link>
                             <Link to="/missions">Missions</Link>
-                            {/* Link to logout */}
+                            <Logout />
                         </>
                     : 
                     <>
                         <Link to="/register">Register</Link>
-                        {/* Link to login */}
+                        <Link to="/login">Login</Link>
                     </>
                         
 
