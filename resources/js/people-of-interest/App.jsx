@@ -6,6 +6,7 @@ import Missions from "./pages/Missions";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import UserContext from "./context/UserContext";
 import axios from "axios";
+import Register from "./pages/Register";
 
 const App = () => {
     const [content, setContent] = useState('');
@@ -54,8 +55,15 @@ const App = () => {
             } */}
             <Routes>
                 <Route path="/" element={<Home />}/>
-                <Route path="/people-of-interest" element={<People />}/>
-                <Route path="/missions" element={<Missions />}/>
+                {
+                    user ?
+                    <>
+                        <Route path="/people-of-interest" element={<People />}/>
+                        <Route path="/missions" element={<Missions />}/>
+                    </>
+                    : 
+                    <Route path="/register" element={<Register />}/>
+                }
             </Routes>
         </div>
     </BrowserRouter>
