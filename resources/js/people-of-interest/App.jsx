@@ -1,12 +1,15 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Navigation from "./common/Navigation";
 import Home from "./pages/Home";
 import People from "./pages/People";
 import Missions from "./pages/Missions";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
+import UserContext from "./context/UserContext";
+import axios from "axios";
 
 const App = () => {
     const [content, setContent] = useState('');
+    const [user, setUser] = useState(null);
 
     // const defineContent = () => {
     //     let contentComponent = null;
@@ -29,7 +32,20 @@ const App = () => {
     //     return contentComponent;
     // }
 
-    return <>
+    const getUser = async () => {
+        try {
+            const response = await axios('/api/user');
+            setUser(response.data);
+        } catch (error) {
+            setUser(false);
+        }
+    }
+
+    useEffect(() => {
+        getUser();
+    }, [])
+
+    return <UserContext.Provider value={{ user, setUser, getUser }}>
     <BrowserRouter>
         <Navigation setContent={setContent}/>
         <div className="main">
@@ -43,7 +59,7 @@ const App = () => {
             </Routes>
         </div>
     </BrowserRouter>
-    </>
+    </UserContext.Provider>
 }
 
 export default App;
