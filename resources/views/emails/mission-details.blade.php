@@ -1,0 +1,1 @@
+Mission {{ $mission->name }} ({{ $mission->year }}) details

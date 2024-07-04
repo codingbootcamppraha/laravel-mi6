@@ -17,3 +17,4 @@ Route::get('/missions/{mission_id}', [App\Http\Controllers\Api\MissionController
 Route::post('/missions/store/{mission_id}', [App\Http\Controllers\Api\MissionController::class, 'store']);
 Route::post('/missions/assign-person', [App\Http\Controllers\Api\MissionController::class, 'assignPerson']);
 Route::post('/missions/unassign-person', [App\Http\Controllers\Api\MissionController::class, 'unassignPerson']);
+Route::post('/missions/send-details', [App\Http\Controllers\Api\MissionController::class, 'sendMissionDetails']);

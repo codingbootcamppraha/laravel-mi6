@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 use App\Models\Mission;
 use App\Models\Person;
 use Illuminate\Validation\Rule;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\SendMissionDetails;
 
 class MissionController extends Controller
 {
@@ -119,6 +121,29 @@ class MissionController extends Controller
         return [
             'status' => 'success',
             'message' => 'Person detached from the mission successfully'
+        ];
+    }
+
+    public function sendMissionDetails(Request $request)
+    {
+        $mission_id = $request->input('mission_id');
+        $user = auth()->user();
+
+        $mission = Mission::find($mission_id);
+
+        if (!$mission) {
+            return [
+                'status' => 'fail',
+                'message' => 'Mission with the id ' . $mission_id . ' does not exist'
+            ];
+        }
+
+        Mail::to($user->email)
+            ->send(new SendMissionDetails($mission));
+
+        return [
+            'status' => 'success',
+            'message' => 'Email was sent successfully'
         ];
     }
 }
