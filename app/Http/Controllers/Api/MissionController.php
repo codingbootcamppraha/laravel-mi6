@@ -9,6 +9,9 @@ use App\Models\Person;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\SendMissionDetails;
+use Illuminate\Support\Facades\Notification;
+use App\Notifications\MissionOutcomeUpdated;
+use App\Models\User;
 
 class MissionController extends Controller
 {
@@ -38,6 +41,7 @@ class MissionController extends Controller
 
         if ($mission_id) {
             $mission = Mission::findOrFail($mission_id);
+            $old_mission_outcome = $mission->outcome;
         } else {
             $mission = new Mission;
         }
@@ -46,6 +50,13 @@ class MissionController extends Controller
         $mission->year = $request->input('year');
         $mission->outcome = $request->input('outcome');
         $mission->save();
+
+        // if outcome has changed
+        if ($mission_id && ($old_mission_outcome != $mission->outcome)) {
+            // $user->notify(new Notification($mission))
+            $admins = User::where('role', 'admin')->get();
+            Notification::send($admins, new MissionOutcomeUpdated($mission));
+        }
 
         return [
             'status' => 'success',
