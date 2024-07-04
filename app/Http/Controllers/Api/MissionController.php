@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Mission;
+use App\Models\Person;
+use Illuminate\Validation\Rule;
 
 class MissionController extends Controller
 {
@@ -46,6 +48,77 @@ class MissionController extends Controller
         return [
             'status' => 'success',
             'message' => 'The mission has been updated'
+        ];
+    }
+
+    public function assignPerson(Request $request)
+    {
+        $mission_id = $request->input('mission_id');
+        $person_id = $request->input('person_id');
+
+        $request->validate([
+            'mission_id' => Rule::unique('mission_person')->where(function ($query) use($mission_id,$person_id) {
+                return $query->where('mission_id', $mission_id)
+                    ->where('person_id', $person_id);
+            }),
+        ], [
+            'mission_id.unique' => "The person has been already assigned to the mission"
+        ]);
+
+        $mission = Mission::find($mission_id);
+
+        if (!$mission) {
+            return [
+                'status' => 'fail',
+                'message' => 'Mission with the id ' . $mission_id . ' does not exist'
+            ];
+        }
+
+        $person = Person::find($person_id);
+
+        if (!$person) {
+            return [
+                'status' => 'fail',
+                'message' => 'Person with the id ' . $person_id . ' does not exist'
+            ];
+        }
+
+        $mission->people()->attach($person->id);
+
+        return [
+            'status' => 'success',
+            'message' => 'Person attached to the mission successfully'
+        ];
+    }
+
+    public function unassignPerson(Request $request)
+    {
+        $mission_id = $request->input('mission_id');
+        $person_id = $request->input('person_id');
+
+        $mission = Mission::find($mission_id);
+
+        if (!$mission) {
+            return [
+                'status' => 'fail',
+                'message' => 'Mission with the id ' . $mission_id . ' does not exist'
+            ];
+        }
+
+        $person = Person::find($person_id);
+
+        if (!$person) {
+            return [
+                'status' => 'fail',
+                'message' => 'Person with the id ' . $person_id . ' does not exist'
+            ];
+        }
+
+        $mission->people()->detach($person->id);
+
+        return [
+            'status' => 'success',
+            'message' => 'Person detached from the mission successfully'
         ];
     }
 }

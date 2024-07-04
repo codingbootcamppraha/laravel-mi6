@@ -15,3 +15,5 @@ Route::get('/statuses', [App\Http\Controllers\Api\StatusController::class, 'inde
 Route::get('/missions', [App\Http\Controllers\Api\MissionController::class, 'index']);
 Route::get('/missions/{mission_id}', [App\Http\Controllers\Api\MissionController::class, 'show']);
 Route::post('/missions/store/{mission_id}', [App\Http\Controllers\Api\MissionController::class, 'store']);
+Route::post('/missions/assign-person', [App\Http\Controllers\Api\MissionController::class, 'assignPerson']);
+Route::post('/missions/unassign-person', [App\Http\Controllers\Api\MissionController::class, 'unassignPerson']);

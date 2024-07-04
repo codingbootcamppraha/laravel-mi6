@@ -9,6 +9,8 @@ const MissionEditForm = ({missionId, setMissionId}) => {
         outcome: null
     });
     const [message, setMessage] = useState(null);
+    const [people, setPeople] = useState([]);
+    const [personId, setPersonId] = useState(null);
 
     const fetchMission = async () => {
         try {
@@ -25,8 +27,18 @@ const MissionEditForm = ({missionId, setMissionId}) => {
         }
     }
 
+    const fetchPeople = async () => {
+        try {
+            const response = await axios.get('/api/people')
+            setPeople(response.data);
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
     useEffect(() => {
         fetchMission();
+        fetchPeople()
     }, [])
 
     const handleSubmit = async (e) => {
@@ -51,6 +63,35 @@ const MissionEditForm = ({missionId, setMissionId}) => {
         });
     }
 
+    const handleAssignmentOfPeople = async (e) => {
+        e.preventDefault();
+        console.log(personId)
+        try {
+            const response = await axios.post('/api/missions/assign-person', {
+                person_id: personId,
+                mission_id: mission.id
+            });
+
+            setMessage(response.data.message)
+            fetchMission();
+        } catch (error) {
+            setMessage(error.response.data.message)
+        }
+    }
+
+    const handleUnassignmentOfPeople = async (personId) => {
+        try {
+            const response = await axios.post('/api/missions/unassign-person', {
+                person_id: personId,
+                mission_id: mission.id
+            });
+            setMessage(response.data.message)
+            fetchMission();
+        } catch (error) {
+            setMessage(error.response.data.message)
+        }
+    }
+
     return <>
         <button onClick={() => setMissionId(null)}>Go back to missions list</button>
         {
@@ -58,12 +99,26 @@ const MissionEditForm = ({missionId, setMissionId}) => {
                 <>
                     <h1>Mission - {mission.name} ({mission.year})</h1>
 
-                    <h2>Edit mission:</h2>
                     {
                         message ?
                             <p>{message}</p>
                         : ''
                     }
+                    <h2>People assigned to the mission:</h2>
+                    {
+                        mission.people.length > 0 ?
+                            <ul>
+                                {
+                                    mission.people.map(person => {
+                                        return <li>{person.name} <button onClick={() => handleUnassignmentOfPeople(person.id)}>x</button></li>
+                                    })
+                                }
+                            </ul>
+                        : 'No people assigned to the mission'
+                    }
+
+                    <h2>Edit mission:</h2>
+                    
                     <form onSubmit={handleSubmit}>
                         <label htmlFor="name">Name:</label>
                         <input type="text" name="name" id="name" value={values.name} onChange={handleChange}/>
@@ -80,6 +135,22 @@ const MissionEditForm = ({missionId, setMissionId}) => {
                         </select>
 
                         <button type="submit">Submit changes</button>
+                    </form>
+
+
+                    <h2>Assign people to mission:</h2>
+                    <form onSubmit={handleAssignmentOfPeople}>
+                        <select name="people" id="people" onChange={(e) => {
+                                setPersonId(e.target.value)
+                            }}>
+                            <option value={null}>Select a person</option>
+                            {
+                                people.map(person => {
+                                    return <option key={person.id} value={person.id}>{person.name}</option>
+                                })
+                            }
+                        </select>
+                        <button type="submit">Assign person</button>
                     </form>
                 </>
 
