@@ -1,9 +1,11 @@
 import React, { useState, useEffect, useContext } from 'react';
 import UserContext from '../context/UserContext';
 import { useNavigate } from 'react-router-dom';
+import ThemeContext from '../context/ThemeContext';
  
 export default function Login(props) {
     const { getUser } = useContext(UserContext);
+    const { theme } = useContext(ThemeContext);
     const navigate = useNavigate();
     
     const [values, setValues] = useState({
@@ -46,7 +48,8 @@ export default function Login(props) {
     }
  
     return (
-        <form action="/login" method="post" onSubmit={ handleSubmit }>
+        <form action="/login" method="post" onSubmit={ handleSubmit } className={theme}>
+            {console.log(theme)}
  
             <input type="email" name="email" value={ values.email } onChange={ handleChange } />
  

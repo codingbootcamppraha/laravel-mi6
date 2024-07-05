@@ -8,10 +8,12 @@ import UserContext from "./context/UserContext";
 import axios from "axios";
 import Register from "./pages/Register";
 import Login from "./pages/Login";
+import ThemeContext from "./context/ThemeContext";
 
 const App = () => {
     const [content, setContent] = useState('');
     const [user, setUser] = useState(null);
+    const [theme, setTheme] = useState('default');
 
     // const defineContent = () => {
     //     let contentComponent = null;
@@ -47,30 +49,33 @@ const App = () => {
         getUser();
     }, [])
 
+
     return <UserContext.Provider value={{ user, setUser, getUser }}>
-    <BrowserRouter>
-        <Navigation setContent={setContent}/>
-        <div className="main">
-            {/* {
-                defineContent()
-            } */}
-            <Routes>
-                <Route path="/" element={<Home />}/>
-                {
-                    user ?
-                    <>
-                        <Route path="/people-of-interest" element={<People />}/>
-                        <Route path="/missions" element={<Missions />}/>
-                    </>
-                    : 
-                    <>
-                        <Route path="/register" element={<Register />}/>
-                        <Route path="/login" element={<Login />}/>
-                    </>
-                }
-            </Routes>
-        </div>
-    </BrowserRouter>
+        <ThemeContext.Provider value={{theme, setTheme}}>
+            <BrowserRouter>
+                <Navigation setContent={setContent}/>
+                <div className="main">
+                    {/* {
+                        defineContent()
+                    } */}
+                    <Routes>
+                        <Route path="/" element={<Home />}/>
+                        {
+                            user ?
+                            <>
+                                <Route path="/people-of-interest" element={<People />}/>
+                                <Route path="/missions" element={<Missions />}/>
+                            </>
+                            : 
+                            <>
+                                <Route path="/register" element={<Register />}/>
+                                <Route path="/login" element={<Login />}/>
+                            </>
+                        }
+                    </Routes>
+                </div>
+            </BrowserRouter>
+        </ThemeContext.Provider>
     </UserContext.Provider>
 }
 
