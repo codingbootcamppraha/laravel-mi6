@@ -64,35 +64,6 @@ const MissionEditForm = ({missionId, setMissionId}) => {
         });
     }
 
-    const handleAssignmentOfPeople = async (e) => {
-        e.preventDefault();
-        console.log(personId)
-        try {
-            const response = await axios.post('/api/missions/assign-person', {
-                person_id: personId,
-                mission_id: mission.id
-            });
-
-            setMessage(response.data.message)
-            fetchMission();
-        } catch (error) {
-            setMessage(error.response.data.message)
-        }
-    }
-
-    const handleUnassignmentOfPeople = async (personId) => {
-        try {
-            const response = await axios.post('/api/missions/unassign-person', {
-                person_id: personId,
-                mission_id: mission.id
-            });
-            setMessage(response.data.message)
-            fetchMission();
-        } catch (error) {
-            setMessage(error.response.data.message)
-        }
-    }
-
     return <>
         <button onClick={() => setMissionId(null)}>Go back to missions list</button>
         {
@@ -136,22 +107,6 @@ const MissionEditForm = ({missionId, setMissionId}) => {
                         </select>
 
                         <button type="submit">Submit changes</button>
-                    </form>
-
-
-                    <h2>Assign people to mission:</h2>
-                    <form onSubmit={handleAssignmentOfPeople}>
-                        <select name="people" id="people" onChange={(e) => {
-                                setPersonId(e.target.value)
-                            }}>
-                            <option value={null}>Select a person</option>
-                            {
-                                people.map(person => {
-                                    return <option key={person.id} value={person.id}>{person.name}</option>
-                                })
-                            }
-                        </select>
-                        <button type="submit">Assign person</button>
                     </form>
                 </>
 
