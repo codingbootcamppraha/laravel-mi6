@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import Logout from "../components/Logout";
 
 export default function Navigation() {
     const [collapsed, setCollapsed] = useState(false);
@@ -21,6 +22,9 @@ export default function Navigation() {
                     <Link to="/">Home</Link>
                     <Link to="/people-of-interest">People of interest</Link>
                     <Link to="/missions">Missions</Link>
+                    <Link to="/login">Login</Link>
+                    <Link to="/register">Register</Link>
+                    <Logout/>
                 </div>
             </div>
 
