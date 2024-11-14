@@ -1,8 +1,13 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
- 
+
+import UserContext from '../context/UserContext';
+
 export default function Register() {
- 
+    const { getUser } = useContext(UserContext);
+    const navigate = useNavigate();
+
     const [values, setValues] = useState({
         email: '',
         name: '',
@@ -24,6 +29,8 @@ export default function Register() {
 
             console.log(response_data);
             
+            getUser();
+            navigate('/');
         } catch (error) {
             // if the response code is not 2xx (success)
             switch (error.response.status) {

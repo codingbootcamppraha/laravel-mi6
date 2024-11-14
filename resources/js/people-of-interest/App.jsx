@@ -10,11 +10,9 @@ import Login from "./pages/Login";
 import Register from "./pages/Register";
 
 import UserContext from "./context/UserContext";
-import ThemeContext from "./context/ThemeContext";
 
 const App = () => {
     const [user, setUser] = useState(null);
-    const [theme, setTheme] = useState('default');
 
     const getUser = async () => {
         try {
@@ -34,20 +32,18 @@ const App = () => {
 
     return (
         <UserContext.Provider value={{ user, setUser, getUser }}>
-            <ThemeContext.Provider value={{theme, setTheme}}>
-                <BrowserRouter>
-                    <Navigation/>
-                    <div className="main">
-                        <Routes>
-                            <Route path="/" element={<Home />}/>
-                            <Route path="/people-of-interest" element={<People />}/>
-                            <Route path="/missions" element={<Missions />}/>
-                            <Route path="/login" element={<Login />}/>
-                            <Route path="/register" element={<Register />}/>
-                        </Routes>
-                    </div>
-                </BrowserRouter>
-            </ThemeContext.Provider>
+            <BrowserRouter>
+                <Navigation/>
+                <div className="main">
+                    <Routes>
+                        <Route path="/" element={<Home />}/>
+                        <Route path="/people-of-interest" element={<People />}/>
+                        <Route path="/missions" element={<Missions />}/>
+                        <Route path="/login" element={<Login />}/>
+                        <Route path="/register" element={<Register />}/>
+                    </Routes>
+                </div>
+            </BrowserRouter>
         </UserContext.Provider>
     )
 }
