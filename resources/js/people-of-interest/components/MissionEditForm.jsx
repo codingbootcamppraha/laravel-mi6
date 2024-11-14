@@ -56,7 +56,6 @@ const MissionEditForm = ({missionId, setMissionId}) => {
     }
 
     const handleChange = (event) => {
-        
         setValues(previousValues => {
             return ({...previousValues, 
                 [event.target.name]: event.target.value
@@ -64,55 +63,103 @@ const MissionEditForm = ({missionId, setMissionId}) => {
         });
     }
 
-    return <>
-        <button onClick={() => setMissionId(null)}>Go back to missions list</button>
-        {
-            mission ? 
-                <>
-                    <h1>Mission - {mission.name} ({mission.year})</h1>
+    const handleAssignmentOfPeople = async (e) => {
+        e.preventDefault();
+        console.log(personId)
+        try {
+            const response = await axios.post('/api/missions/assign-person', {
+                person_id: personId,
+                mission_id: mission.id
+            });
 
-                    {
-                        message ?
-                            <p>{message}</p>
-                        : ''
-                    }
-                    <h2>People assigned to the mission:</h2>
-                    {
-                        mission.people.length > 0 ?
-                            <ul>
+            setMessage(response.data.message)
+            fetchMission();
+        } catch (error) {
+            setMessage(error.response.data.message)
+        }
+    }
+
+    const handleUnassignmentOfPeople = async (personId) => {
+        try {
+            const response = await axios.post('/api/missions/unassign-person', {
+                person_id: personId,
+                mission_id: mission.id
+            });
+
+            setMessage(response.data.message)
+            fetchMission();
+        } catch (error) {
+            setMessage(error.response.data.message)
+        }
+    }
+
+    return (
+        <>
+            <button onClick={() => setMissionId(null)}>Go back to missions list</button>
+            {
+                mission ? 
+                    <>
+                        <h1>Mission - {mission.name} ({mission.year})</h1>
+
+                        {
+                            message ?
+                                <p>{message}</p>
+                            : ''
+                        }
+                        <h2>People assigned to the mission:</h2>
+                        {
+                            mission.people.length > 0 ?
+                                <ul>
+                                    {
+                                        mission.people.map(person => {
+                                            return <li>{person.name} <button onClick={() => handleUnassignmentOfPeople(person.id)}>x</button></li>
+                                        })
+                                    }
+                                </ul>
+                            : 'No people assigned to the mission'
+                        }
+
+                        <h2>Edit mission:</h2>
+                        
+                        <form onSubmit={handleSubmit}>
+                            <label htmlFor="name">Name:</label>
+                            <input type="text" name="name" id="name" value={values.name} onChange={handleChange}/>
+
+                            <label htmlFor="year">Year:</label>
+                            <input type="number" name="year" id="year" value={values.year} onChange={handleChange}/>
+
+                            <label htmlFor="outcome">Outcome successful:</label>
+                            {/* <input type="checkbox" name="outcome" id="outcome" checked={values.outcome}/> */}
+                            <select name="outcome" id="outcome" value={values.outcome} onChange={handleChange}>
+                                <option value=''>Unknown</option>
+                                <option value={1}>Successful</option>
+                                <option value={0}>Failed</option>
+                            </select>
+
+                            <button type="submit">Submit changes</button>
+                        </form>
+
+
+                        <h2>Assign people to mission:</h2>
+                        <form onSubmit={handleAssignmentOfPeople}>
+                            <select name="people" id="people" onChange={(e) => {
+                                    setPersonId(e.target.value)
+                                }}>
+                                <option value={null}>Select a person</option>
                                 {
-                                    mission.people.map(person => {
-                                        return <li>{person.name} <button onClick={() => handleUnassignmentOfPeople(person.id)}>x</button></li>
+                                    people.map(person => {
+                                        return <option key={person.id} value={person.id}>{person.name}</option>
                                     })
                                 }
-                            </ul>
-                        : 'No people assigned to the mission'
-                    }
+                            </select>
+                            <button type="submit">Assign person</button>
+                        </form>
+                    </>
 
-                    <h2>Edit mission:</h2>
-                    
-                    <form onSubmit={handleSubmit}>
-                        <label htmlFor="name">Name:</label>
-                        <input type="text" name="name" id="name" value={values.name} onChange={handleChange}/>
-
-                        <label htmlFor="year">Year:</label>
-                        <input type="number" name="year" id="year" value={values.year} onChange={handleChange}/>
-
-                        <label htmlFor="outcome">Outcome successful:</label>
-                        {/* <input type="checkbox" name="outcome" id="outcome" checked={values.outcome}/> */}
-                        <select name="outcome" id="outcome" value={values.outcome} onChange={handleChange}>
-                            <option value=''>Unknown</option>
-                            <option value={1}>Successful</option>
-                            <option value={0}>Failed</option>
-                        </select>
-
-                        <button type="submit">Submit changes</button>
-                    </form>
-                </>
-
-            : ''
-        }
-    </>
+                : ''
+            }
+        </>
+    );
 }
 
 export default MissionEditForm;

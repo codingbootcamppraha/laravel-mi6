@@ -14,6 +14,16 @@ const MissionsList = ({setMissionId}) => {
         }
     }
 
+    const handleDetailsRequest = async (missionId) => {
+        try {
+            const response = await axios.post('/api/missions/send-details', {
+                mission_id: missionId
+            });
+        } catch (error) {
+            
+        }
+    }
+
     useEffect(() => {
         fetchMissions();
     }, [])
@@ -30,6 +40,7 @@ const MissionsList = ({setMissionId}) => {
                         <button onClick={() => setMissionId(mission.id)}>
                             See/Edit mission details
                         </button>
+                        <button onClick={() => {handleDetailsRequest(mission.id)}}>Send me mission details</button>
                     </li>
                 })
             }
